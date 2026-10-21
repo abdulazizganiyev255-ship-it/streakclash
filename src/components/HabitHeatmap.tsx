@@ -49,7 +49,7 @@ export const HabitHeatmap: React.FC<HabitHeatmapProps> = ({
                     borderColor: isToday ? '#ffffff' : isCompleted ? `${color}44` : 'rgba(255,255,255,0.03)',
                   }}
                   className={`w-[13px] h-[13px] rounded-[3px] transition-all duration-200 border ${
-                    interactive ? 'cursor-pointer hover:scale-135 hover:z-10' : 'cursor-default'
+                    interactive ? 'cursor-pointer hover:scale-[1.35] hover:z-10' : 'cursor-default'
                   } ${isCompleted ? 'scale-100' : 'hover:bg-slate-700/80'}`}
                 />
               );

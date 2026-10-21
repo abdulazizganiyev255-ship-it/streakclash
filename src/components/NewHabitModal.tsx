@@ -62,9 +62,9 @@ export const NewHabitModal: React.FC<NewHabitModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
-      <div className="bg-[#12141c] border border-slate-800 rounded-2xl max-w-md w-full overflow-hidden shadow-2xl flex flex-col">
+      <div className="bg-[#12141c] border border-slate-800 rounded-2xl max-w-md w-full overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-800">
+        <div className="flex items-center justify-between p-4 border-b border-slate-800 shrink-0">
           <div className="flex items-center gap-2">
             <Plus className="w-5 h-5 text-emerald-400" />
             <h3 className="font-semibold text-slate-100">Yangi Odat Qo'shish</h3>
@@ -78,7 +78,7 @@ export const NewHabitModal: React.FC<NewHabitModalProps> = ({
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-4 space-y-4">
+        <form onSubmit={handleSubmit} className="p-4 space-y-4 overflow-y-auto">
           <div>
             <label className="block text-xs font-semibold text-slate-300 mb-1">
               Odat nomi

@@ -55,9 +55,6 @@ export interface Duel {
   };
   targetDays: number;
   currentDay: number;
-  stakes: string;
-  wagerXp: number; // XP garovi: e.g. 100 XP
-  prizePool: number; // 2x wagerXp: e.g. 200 XP
   status: 'active' | 'won' | 'lost';
 }
 
