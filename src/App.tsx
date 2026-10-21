@@ -453,13 +453,13 @@ export function App() {
         </div>
       )}
 
-      {/* Main Tab 2: 1v1 Duels with Wager XP */}
+      {/* Main Tab 2: 1v1 Duels */}
       {activeTab === 'duels' && (
         <div className="space-y-4 pt-3">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-sm font-bold text-white m-0">1v1 Do'stona Duellar & XP Garovi</h2>
-              <p className="text-xs text-slate-400">Do'stlarga challenge tashlang va XP jamg'armasini yutib oling</p>
+              <h2 className="text-sm font-bold text-white m-0">1v1 Do'stona Duellar</h2>
+              <p className="text-xs text-slate-400">Do'stlarga challenge tashlang va kim uzoqroq streak ushlab turishini bilib oling</p>
             </div>
             <button
               onClick={() => setShowDuelModal(true)}
@@ -483,20 +483,12 @@ export function App() {
                       <h4 className="font-bold text-white text-sm m-0">{duel.title}</h4>
                       <div className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5 font-medium">
                         <Trophy className="w-3 h-3 text-amber-400" />
-                        <span>Garov: {duel.stakes}</span>
+                        <span>{duel.habitTitle}</span>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <span className="text-xs font-semibold font-mono px-2.5 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/30">
-                        {duel.currentDay}/{duel.targetDays} kun
-                      </span>
-                      {duel.wagerXp > 0 && (
-                        <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
-                          <Zap className="w-2.5 h-2.5 fill-amber-300" />
-                          {duel.prizePool} XP Jamg'arma
-                        </span>
-                      )}
-                    </div>
+                    <span className="text-xs font-semibold font-mono px-2.5 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/30">
+                      {duel.currentDay}/{duel.targetDays} kun
+                    </span>
                   </div>
 
                   {/* Dual Battle Card */}

@@ -160,9 +160,11 @@ export const FlexCardModal: React.FC<FlexCardModalProps> = ({ habit, profile, on
                 <div>
                   <div className="text-sm font-bold text-white flex items-center gap-1.5">
                     {profile.name}
-                    <span className="bg-amber-500/20 text-amber-300 text-[10px] px-1.5 py-0.5 rounded font-mono font-semibold">
-                      PRO
-                    </span>
+                    {profile.isPro && (
+                      <span className="bg-amber-500/20 text-amber-300 text-[10px] px-1.5 py-0.5 rounded font-mono font-semibold">
+                        PRO
+                      </span>
+                    )}
                   </div>
                   <div className="text-xs text-slate-400">@{profile.username}</div>
                 </div>

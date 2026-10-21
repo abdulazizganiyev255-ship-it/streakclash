@@ -156,9 +156,6 @@ const DEFAULT_DUELS: Duel[] = [
     },
     targetDays: 30,
     currentDay: 19,
-    stakes: 'Yutqazgan bir hafta kofe olib beradi ☕',
-    wagerXp: 100,
-    prizePool: 200,
     status: 'active',
   },
   {
@@ -179,9 +176,6 @@ const DEFAULT_DUELS: Duel[] = [
     },
     targetDays: 21,
     currentDay: 19,
-    stakes: 'Instagram Storyda maqtab tabriklash 👑',
-    wagerXp: 150,
-    prizePool: 300,
     status: 'active',
   },
 ];
@@ -449,7 +443,7 @@ export const storage = {
           category: 'Duel Ogohlantirishi',
           type: 'duel',
           title: `⚔️ ${activeDuel.rival.name} sizdan ${diff} kunga oldinda!`,
-          text: `Bugungi odatni belgilab, oradagi farqni kamaytiring. Garov: "${activeDuel.stakes}". Mag'lubiyatga yo'l qo'ymang!`,
+          text: `Bugungi odatni belgilab, oradagi farqni kamaytiring. Mag'lubiyatga yo'l qo'ymang!`,
         });
       } else {
         insights.push({

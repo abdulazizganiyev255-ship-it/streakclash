@@ -10,7 +10,7 @@ Ushbu hujjat **StreakClash** ilovasining to'liq dizayn tizimi, ranglar palitrasi
 
 ## 🌌 1. Dizayn Falsafasi va Emotsional Joylashuv (Brand Identity)
 
-* **Asosiy Falsafa:** Odatlarni zerikarli yolg'iz kundalikdan — do'stlar bilan XP garovi ostida o'ynaladigan, dofaminga boy va ijtimoiy tarmoqlarda maqtanishga arzigulik o'yinga aylantirish.
+* **Asosiy Falsafa:** Odatlarni zerikarli yolg'iz kundalikdan — do'stlar bilan 1v1 streak raqobatida o'ynaladigan, dofaminga boy va ijtimoiy tarmoqlarda maqtanishga arzigulik o'yinga aylantirish.
 * **Vizual Tili:** 
   - **OLED Pure Black (#030406):** Ko'zni charchatmaydigan, batareyani tejaydigan chuqur qora fon.
   - **Glassmorphism:** Nozik shishasimon qatlamlar (`backdrop-blur-24px`, `1px` oq nurli chegaralar).
@@ -36,8 +36,8 @@ Ushbu hujjat **StreakClash** ilovasining to'liq dizayn tizimi, ranglar palitrasi
 | **Neon Emerald** | `#10b981` | Salomatlik va sport odatlari, bajarilganlik nishoni |
 | **Cyber Cyan** | `#06b6d4` | Kod yozish, chuqur ish (Deep work), intizom |
 | **Blaze Orange** | `#f97316` | Olovli zanjir (Flame streak), ogohlantirishlar |
-| **Gold Royalty** | `#f59e0b` | VIP Crown, XP Garovi jamg'armasi, 1-o'rin |
-| **Clash Crimson** | `#ef4444` | 1v1 Duellar, raqobat tugmalari, garovlar |
+| **Gold Royalty** | `#f59e0b` | VIP Crown, yutuqlar, 1-o'rin |
+| **Clash Crimson** | `#ef4444` | 1v1 Duellar, raqobat tugmalari |
 
 ---
 
@@ -77,7 +77,7 @@ Ushbu hujjat **StreakClash** ilovasining to'liq dizayn tizimi, ranglar palitrasi
 * **Chap qism:** Sizning profilingiz, olovli streak va "Bugun bajarildi ✓" yashil nuri.
 * **Markaz:** 3D metallik yorug'lik taratuvchi **"VS"** nishoni.
 * **O'ng qism:** Raqibingiz profilingiz, olovli streak va "Kutilmoqda ⏳" ogohlantirishi.
-* **XP Jamg'arma:** Oltin chip `⚡ 200 XP Pot (100 XP tikilgan)`.
+* **Progress:** Marafon davomiyligi chizig'i `kun / targetDays` ko'rsatkichi bilan.
 
 ### D. Floating Bottom Navigation Dock (Pastki Suzuvchi Panel)
 * **O'lchami:** Kengligi `360px`, bo'yi `56px`, radiusi `9999px` (to'liq oval kapsula).
