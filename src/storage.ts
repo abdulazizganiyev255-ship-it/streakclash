@@ -382,6 +382,55 @@ export const storage = {
     return mockOthers.sort((a, b) => b.streak - a.streak).map((item, idx) => ({ ...item, rank: idx + 1 }));
   },
 
+  // Last 7 days completion rate, for the weekly activity bar chart
+  getWeeklyActivity(): { label: string; pct: number }[] {
+    const habits = this.getHabits().filter((h) => !h.isArchived);
+    const dayLabels = ['Ya', 'Du', 'Se', 'Ch', 'Pa', 'Ju', 'Sh'];
+    const days = getLastNDays(7);
+    return days.map((dateStr) => {
+      const date = new Date(dateStr);
+      const completed = habits.filter((h) => h.completedDates.includes(dateStr)).length;
+      const pct = habits.length > 0 ? Math.round((completed / habits.length) * 100) : 0;
+      return { label: dayLabels[date.getDay()], pct };
+    });
+  },
+
+  // Daily completion-rate trend over the last N days, for the streak-trend line chart
+  getActivityTrend(days: number = 14): number[] {
+    const habits = this.getHabits().filter((h) => !h.isArchived);
+    return getLastNDays(days).map((dateStr) => {
+      const completed = habits.filter((h) => h.completedDates.includes(dateStr)).length;
+      return habits.length > 0 ? Math.round((completed / habits.length) * 100) : 0;
+    });
+  },
+
+  // Share of total completions per habit category, for the category breakdown chart
+  getCategoryBreakdown(): { category: string; label: string; color: string; pct: number }[] {
+    const habits = this.getHabits().filter((h) => !h.isArchived);
+    const META: Record<string, { label: string; color: string }> = {
+      fitness: { label: 'Sport', color: '#10b981' },
+      learning: { label: "Ta'lim", color: '#8b5cf6' },
+      mind: { label: 'Ong', color: '#f59e0b' },
+      discipline: { label: 'Intizom', color: '#06b6d4' },
+      business: { label: 'Biznes', color: '#f97316' },
+    };
+    const totals = new Map<string, number>();
+    let grandTotal = 0;
+    for (const h of habits) {
+      totals.set(h.category, (totals.get(h.category) ?? 0) + h.totalCompletions);
+      grandTotal += h.totalCompletions;
+    }
+    return Array.from(totals.entries())
+      .map(([category, total]) => ({
+        category,
+        label: META[category]?.label ?? category,
+        color: META[category]?.color ?? '#8b5cf6',
+        pct: grandTotal > 0 ? Math.round((total / grandTotal) * 100) : 0,
+      }))
+      .filter((c) => c.pct > 0)
+      .sort((a, b) => b.pct - a.pct);
+  },
+
   // Automated Smart Insights Engine (Fast, Rule-based & Behavioral Psychology)
   getAutomatedSmartInsights(): { category: string; type: 'success' | 'warning' | 'tip' | 'duel'; title: string; text: string }[] {
     const habits = this.getHabits();

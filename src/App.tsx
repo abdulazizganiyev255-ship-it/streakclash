@@ -19,6 +19,9 @@ import {
   Zap,
   Archive,
   ArchiveRestore,
+  BarChart3,
+  TrendingUp,
+  PieChart,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { Habit, UserProfile, Duel, LeaderboardEntry } from './types';
@@ -29,6 +32,21 @@ import { FlexCardModal } from './components/FlexCardModal';
 import { DuelModal } from './components/DuelModal';
 import { PaywallModal } from './components/PaywallModal';
 import { NewHabitModal } from './components/NewHabitModal';
+
+// Builds an SVG line + area path for a simple sparkline/trend chart
+function buildSparkline(values: number[], width: number, height: number) {
+  if (values.length === 0) return { linePath: '', areaPath: '', lastPoint: { x: 0, y: height } };
+  const max = Math.max(100, ...values);
+  const stepX = values.length > 1 ? width / (values.length - 1) : 0;
+  const points = values.map((v, i) => {
+    const x = Math.round(i * stepX);
+    const y = Math.round(height - 8 - (v / max) * (height - 16));
+    return { x, y };
+  });
+  const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+  const areaPath = `${linePath} L${width},${height} L0,${height} Z`;
+  return { linePath, areaPath, lastPoint: points[points.length - 1] };
+}
 
 export function App() {
   const [profile, setProfile] = useState<UserProfile>(() => storage.getProfile());
@@ -52,6 +70,14 @@ export function App() {
 
   const today = getTodayDateStr();
   const automatedInsights = storage.getAutomatedSmartInsights();
+  const weeklyActivity = storage.getWeeklyActivity();
+  const weeklyAvg = weeklyActivity.length > 0
+    ? Math.round(weeklyActivity.reduce((sum, d) => sum + d.pct, 0) / weeklyActivity.length)
+    : 0;
+  const activityTrend = storage.getActivityTrend(14);
+  const trendDelta = activityTrend.length > 1 ? activityTrend[activityTrend.length - 1] - activityTrend[0] : 0;
+  const trendChart = buildSparkline(activityTrend, 326, 90);
+  const categoryBreakdown = storage.getCategoryBreakdown();
 
   // Progress metrics for today (only active habits)
   const activeHabitsList = habits.filter((h) => !h.isArchived);
@@ -617,6 +643,76 @@ export function App() {
               Neyrobiologiya va xulq-atvor psixologiyasi qoidalari asosida sizning hozirgi zanjirlaringiz tahlili:
             </p>
           </div>
+
+          {/* Weekly Activity Bar Chart */}
+          <div className="glass-panel rounded-2xl p-4.5 border-white/[0.06]">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bold text-white text-sm flex items-center gap-2 m-0">
+                <BarChart3 className="w-4 h-4 text-purple-400" />
+                Haftalik Faollik
+              </h3>
+              <span className="text-xs font-mono font-bold text-purple-400">O'rtacha {weeklyAvg}%</span>
+            </div>
+            <div className="flex items-end gap-2.5 h-24">
+              {weeklyActivity.map((d, idx) => (
+                <div key={idx} className="flex-1 h-full flex flex-col items-center gap-1.5">
+                  <div className="w-full flex-1 rounded-md bg-white/[0.04] flex items-end overflow-hidden">
+                    <div
+                      className="w-full rounded-md bg-gradient-to-t from-cyan-400 to-purple-500 transition-all duration-500"
+                      style={{
+                        height: `${Math.max(d.pct, 4)}%`,
+                        boxShadow: d.pct === 100 ? '0 0 12px rgba(139,92,246,0.6)' : undefined,
+                      }}
+                    />
+                  </div>
+                  <span className="text-[9px] font-mono text-slate-500">{d.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Activity Trend Line Chart */}
+          <div className="glass-panel rounded-2xl p-4.5 border-white/[0.06]">
+            <div className="flex items-center justify-between mb-2.5">
+              <h3 className="font-bold text-white text-sm flex items-center gap-2 m-0">
+                <TrendingUp className="w-4 h-4 text-cyan-400" />
+                {activityTrend.length} Kunlik Faollik Tendensiyasi
+              </h3>
+              <span className={`text-xs font-mono font-bold ${trendDelta >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                {trendDelta >= 0 ? '+' : ''}{trendDelta}%
+              </span>
+            </div>
+            <svg viewBox="0 0 326 90" className="w-full h-[90px]" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path d={trendChart.areaPath} fill="url(#trendFill)" />
+              <path d={trendChart.linePath} fill="none" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx={trendChart.lastPoint.x} cy={trendChart.lastPoint.y} r="4.5" fill="#8b5cf6" stroke="#050608" strokeWidth="2" />
+            </svg>
+          </div>
+
+          {/* Category Breakdown */}
+          {categoryBreakdown.length > 0 && (
+            <div className="glass-panel rounded-2xl p-4.5 border-white/[0.06] space-y-2.5">
+              <h3 className="font-bold text-white text-sm flex items-center gap-2 m-0 mb-1">
+                <PieChart className="w-4 h-4 text-emerald-400" />
+                Toifalar bo'yicha taqsimot
+              </h3>
+              {categoryBreakdown.map((c) => (
+                <div key={c.category} className="flex items-center gap-2.5">
+                  <span className="text-[11px] font-semibold text-slate-400 w-14 shrink-0">{c.label}</span>
+                  <div className="flex-1 h-2 rounded-full bg-white/[0.04] overflow-hidden">
+                    <div className="h-full rounded-full transition-all duration-500" style={{ width: `${c.pct}%`, backgroundColor: c.color }} />
+                  </div>
+                  <span className="text-[10px] font-mono font-bold w-9 text-right" style={{ color: c.color }}>{c.pct}%</span>
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="space-y-3">
             {automatedInsights.map((insight, idx) => (
